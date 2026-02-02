@@ -15,6 +15,13 @@ const Header = () => {
             
         </div>
 
+        <nav className="hidden md:flex space-x-6">
+  <a href="/" className="hover:text-blue-600">Home</a>
+  <a href="/products" className="hover:text-blue-600">Products</a>
+  <a href="#" className="hover:text-blue-600">Categories</a>
+  <a href="#" className="hover:text-blue-600">Deals</a>
+</nav>
+
         {/* SEARCH BAR - Center */}
 
         <div className="hidden md:flex flex-1 max-w-2xl mx-8">
