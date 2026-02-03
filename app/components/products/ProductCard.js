@@ -1,65 +1,118 @@
+// File: app/components/products/ProductCard.js
+import Link from "next/link";
+import Image from "next/image";
 import { formatPrice, generateStars } from '../../lib/utils/helpers';
 
-const ProductCard = ({product}) => {
+const ProductCard = ({ product }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <Link href={`/products/${product.id}`} className="block">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         {/* PRODUCT IMAGE */}
-            <div className="relative h-48 bg-gray-200">
-                <div className="flex items-center justify-center h-full text--gray-500 ">
-                    <div className="text-center">
-                        <div className="text-4xl mb-2">🛒</div>
-                        <p className="text-sm">Product image</p>
+        <div className="relative h-48 bg-gray-200 overflow-hidden">
+          {product.images && product.images.length > 0 ? (
+            // Using Next.js Image component for optimized images
+            <div className="relative w-full h-full">
+              {/* For now using img tag since we don't have Next.js Image configured */}
+              <img 
+                src={product.images[0]} 
+                alt={product.name}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  // Fallback if image fails to load
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `
+                    <div class="flex items-center justify-center h-full w-full bg-gray-100">
+                      <div class="text-center text-gray-400">
+                        <div class="text-3xl mb-2">📷</div>
+                        <p class="text-sm">${product.name}</p>
+                      </div>
                     </div>
-                </div>
-                <span className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">{product.category}</span>
-
+                  `;
+                }}
+              />
             </div>
+          ) : (
+            // Fallback if no images
+            <div className="flex items-center justify-center h-full text-gray-500">
+              <div className="text-center">
+                <div className="text-4xl mb-2">📷</div>
+                <p className="text-sm">{product.name}</p>
+              </div>
+            </div>
+          )}
+          
+          <span className="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+            {product.category}
+          </span>
+          
+          {/* Discount badge if originalPrice exists */}
+          {product.originalPrice && product.originalPrice > product.price && (
+            <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+              -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+            </span>
+          )}
+        </div>
 
         {/* PRODUCT INFO */}
+        <div className="p-4">
+          <h3 className="font-semibold text-lg mb-2 truncate hover:text-blue-600">
+            {product.name}
+          </h3>
 
+          <div className='flex items-center mb-2'>
+            <span className='text-yellow-500 mr-1'>
+              {generateStars(product.rating)}
+            </span>
+            <span className='text-gray-600 text-sm'>
+              ({product.rating})
+            </span>
+            {product.reviewCount && (
+              <span className="text-gray-400 text-sm ml-2">
+                • {product.reviewCount} reviews
+              </span>
+            )}
+          </div>
 
-            <div className="p-4">
-                 <h3 className="font-semibold text-lg mb-2 truncate">
-                    {product.name}
-                 </h3>
-
-                 <div className='flex items-center mb-2'>
-                    <span className='text-yellow-500 mr-1'>
-                        {generateStars(product.rating)}
-                    </span>
-                    <span className='text-gray-600 text-sm '>
-                        ({product.rating})
-                    </span>
-                 </div>
-
-                 {/* Price */}
-                    <div className='mb-4'>
-                        <span className='text-2xl font-bold text-gray-900'>
-                            {formatPrice(product.price)}
-                        </span>
-
-                    </div>
-
-                    {/* Add to Cart Button */}
-                     <button className='w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200'>
-                         Add to Cart
-                     </button>
-
-                    {/* Stock Status */}
-                    <div className='mt-2 text-sm text-gray-600'>
-                            {product.stock > 0 ? (
-                            <span className="text-green-600">In Stock ({product.stock} left)</span>
-                        ) : (
-                            <span className="text-red-600">Out of Stock</span>
-                        )}
-
-                    </div>    
+          {/* Price */}
+          <div className='mb-4'>
+            <div className="flex items-center gap-2">
+              <span className='text-2xl font-bold text-gray-900'>
+                {formatPrice(product.price)}
+              </span>
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className='text-lg text-gray-500 line-through'>
+                  {formatPrice(product.originalPrice)}
+                </span>
+              )}
             </div>
+          </div>
 
-        
+          {/* Add to Cart Button */}
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              alert(`Added ${product.name} to cart!`);
+            }}
+            className='w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200'
+          >
+            Add to Cart
+          </button>
 
-    </div>
-  )
-}
+          {/* Stock Status */}
+          <div className='mt-2 text-sm'>
+            {product.inStock ? (
+              <span className="text-green-600">✓ In Stock</span>
+            ) : product.stock > 0 ? (
+              <span className="text-green-600">In Stock ({product.stock} left)</span>
+            ) : (
+              <span className="text-red-600">Out of Stock</span>
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
-export default ProductCard
+export default ProductCard;
