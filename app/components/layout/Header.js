@@ -1,69 +1,65 @@
 
-
 const Header = () => {
   return (
-    <header className="sticky bg-white border-b top-0 w-full z-50">
+    <header className="sticky bg-white border-b top-0 w-full z-50 shadow-sm">
       <div className="container mx-auto px-4">
-        
        
-        <div className="flex h-16 items-center justify-between">
-             {/* LOGO SECTION - Left side */}
-        <div className="flex items-center">
-          <div className="text-2xl font-bold text-blue-600">
-             merkato
+        <div className="flex h-20 items-center justify-between">
+          
+          {/* LOGO SECTION - Left side */}
+          <div className="flex items-center">
+            <div className="text-2xl font-bold text-blue-600">
+              merkato
+            </div>
           </div>
-            
-        </div>
 
-        <nav className="hidden md:flex space-x-6">
-  <a href="/" className="hover:text-blue-600">Home</a>
-  <a href="/products" className="hover:text-blue-600">Products</a>
-  <a href="#" className="hover:text-blue-600">Categories</a>
-  <a href="#" className="hover:text-blue-600">Deals</a>
-</nav>
-
-        {/* SEARCH BAR - Center */}
-
-        <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-              <div className="relative w-full">
-                <input
+          {/* SEARCH BAR - Center */}
+          <div className="hidden lg:flex flex-1 max-w-xl mx-8">
+            <div className="relative w-full">
+              <input
                 type="text"
-                placeholder="Search Products..."
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
-                
-                <button className="absolute right-3 top-2.5">
-                    🔍
-                </button>
-              </div>
-        </div>
-
-        {/* NAVIGATION & USER - Right side */}
-
-        <div className="flex items-center space-x-6 ">
-             {/* CART ICON with badge */}
-          <div className="relative">
-              <button className="p-2">
-                   🛒
+                placeholder="Search products..."
+                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button className="absolute right-3 top-3">
+                🔍
               </button>
+            </div>
+          </div>
 
-              <span className="absolute -top-1 -right-1  bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                 0
+          {/* NAVIGATION & USER - Right side */}
+          <div className="flex items-center space-x-8">
+            
+            {/* NAVIGATION LINKS */}
+            <nav className="hidden md:flex space-x-8">
+              <a href="/" className="hover:text-blue-600 transition">Home</a>
+              <a href="/products" className="hover:text-blue-600 transition">Products</a>
+              <a href="#" className="hover:text-blue-600 transition">Categories</a>
+              <a href="#" className="hover:text-blue-600 transition">Deals</a>
+            </nav>
+
+            {/* CART ICON with badge */}
+            <div className="relative">
+              <button className="p-2 hover:bg-gray-100 rounded-full transition">
+                🛒
+              </button>
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                0
               </span>
-          </div>
+            </div>
            
-           {/* USER MENU / LOGIN */}
-          <div>
-              <button className="flex items-center space-x-2">
-                  <span>👤</span>
-                  <span className="hidden md:inline">Login</span>
+            {/* USER MENU / LOGIN */}
+            <div>
+              <button className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg transition">
+                <span>👤</span>
+                <span className="hidden md:inline">Login</span>
               </button>
+            </div>
+
           </div>
-        </div>
 
         </div>
         
-        
-
       </div>
            
     </header>
