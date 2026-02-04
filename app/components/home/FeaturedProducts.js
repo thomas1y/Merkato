@@ -1,4 +1,4 @@
-
+"use client";
 import { featuredProducts } from '../../lib/utils/mockData';
 import ProductCard from '../products/ProductCard';
 

@@ -13,13 +13,12 @@ const ProductFilters = ({
   onClearAll
 }) => {
   const categories = [
-    { id: "electronics", label: "Electronics", count: 8 },
-    { id: "clothing", label: "Clothing", count: 6 },
-    { id: "books", label: "Books", count: 5 },
-    { id: "home", label: "Home & Kitchen", count: 7 },
-    { id: "sports", label: "Sports & Outdoors", count: 4 },
-    { id: "beauty", label: "Beauty", count: 3 }
-  ];
+  { id: "electronics", label: "Electronics", count: 3 },
+  { id: "clothing", label: "Clothing", count: 1 },
+  { id: "home & kitchen", label: "Home & Kitchen", count: 1 },
+  { id: "books", label: "Books", count: 1 },
+  { id: "sports", label: "Sports", count: 2 },
+];
 
   const priceRanges = [
     { id: "under50", label: "Under $50", range: "0-50" },

@@ -1,6 +1,6 @@
-// File: app/components/products/ProductCard.js
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
 import { formatPrice, generateStars } from '../../lib/utils/helpers';
 
 const ProductCard = ({ product }) => {
@@ -9,30 +9,31 @@ const ProductCard = ({ product }) => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         {/* PRODUCT IMAGE */}
         <div className="relative h-48 bg-gray-200 overflow-hidden">
-          {product.images && product.images.length > 0 ? (
-            // Using Next.js Image component for optimized images
+          {product.image ? (
             <div className="relative w-full h-full">
-              {/* For now using img tag since we don't have Next.js Image configured */}
               <img 
-                src={product.images[0]} 
+                src={product.image} 
                 alt={product.name}
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 onError={(e) => {
                   // Fallback if image fails to load
                   e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = `
-                    <div class="flex items-center justify-center h-full w-full bg-gray-100">
-                      <div class="text-center text-gray-400">
-                        <div class="text-3xl mb-2">📷</div>
-                        <p class="text-sm">${product.name}</p>
+                  const parent = e.target.parentElement;
+                  if (parent) {
+                    parent.innerHTML = `
+                      <div class="flex items-center justify-center h-full w-full bg-gray-100">
+                        <div class="text-center text-gray-400">
+                          <div class="text-3xl mb-2">📷</div>
+                          <p class="text-sm">${product.name}</p>
+                        </div>
                       </div>
-                    </div>
-                  `;
+                    `;
+                  }
                 }}
               />
             </div>
           ) : (
-            // Fallback if no images
+            // Fallback if no image
             <div className="flex items-center justify-center h-full text-gray-500">
               <div className="text-center">
                 <div className="text-4xl mb-2">📷</div>
@@ -66,9 +67,9 @@ const ProductCard = ({ product }) => {
             <span className='text-gray-600 text-sm'>
               ({product.rating})
             </span>
-            {product.reviewCount && (
+            {product.reviews && (
               <span className="text-gray-400 text-sm ml-2">
-                • {product.reviewCount} reviews
+                • {product.reviews} reviews
               </span>
             )}
           </div>
@@ -101,9 +102,7 @@ const ProductCard = ({ product }) => {
 
           {/* Stock Status */}
           <div className='mt-2 text-sm'>
-            {product.inStock ? (
-              <span className="text-green-600">✓ In Stock</span>
-            ) : product.stock > 0 ? (
+            {product.stock > 0 ? (
               <span className="text-green-600">In Stock ({product.stock} left)</span>
             ) : (
               <span className="text-red-600">Out of Stock</span>
