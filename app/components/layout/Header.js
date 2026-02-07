@@ -1,5 +1,23 @@
-
+'use client';
+import { useEffect, useState } from "react";
+import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { selectCartTotalQuantity } from '@/app/lib/store/features/cart/selectors';
+import { FiShoppingCart, FiSearch, FiUser } from 'react-icons/fi';
 const Header = () => {
+
+ const totalQuantity = useSelector(selectCartTotalQuantity);
+ const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+ 
+
+
   return (
     <header className="sticky bg-white border-b top-0 w-full z-50 shadow-sm">
       <div className="container mx-auto px-4">
@@ -31,22 +49,45 @@ const Header = () => {
           <div className="flex items-center space-x-8">
             
             {/* NAVIGATION LINKS */}
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="hover:text-blue-600 transition">Home</a>
-              <a href="/products" className="hover:text-blue-600 transition">Products</a>
-              <a href="#" className="hover:text-blue-600 transition">Categories</a>
-              <a href="#" className="hover:text-blue-600 transition">Deals</a>
-            </nav>
+            <nav className="hidden md:flex items-center space-x-6">
+            <Link 
+              href="/" 
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Home
+            </Link>
+            <Link 
+              href="/products" 
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Products
+            </Link>
+            <Link 
+              href="/categories" 
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Categories
+            </Link>
+            <Link 
+              href="/about" 
+              className="text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              About
+            </Link>
+          </nav>
 
             {/* CART ICON with badge */}
-            <div className="relative">
-              <button className="p-2 hover:bg-gray-100 rounded-full transition">
-                🛒
-              </button>
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
-              </span>
-            </div>
+            <Link 
+              href="/cart" 
+              className="relative text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              <FiShoppingCart className="w-6 h-6" />
+              {totalQuantity > 0 && (
+                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalQuantity}
+                </span>
+              )}
+            </Link>
            
             {/* USER MENU / LOGIN */}
             <div>

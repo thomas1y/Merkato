@@ -1,9 +1,28 @@
-"use client";
+'use client';
+
+
+import { useDispatch } from 'react-redux';
+import { addItem } from '@/app/lib/store/features/cart/cartSlice';
 
 import Link from "next/link";
 import { formatPrice, generateStars } from '../../lib/utils/helpers';
 
 const ProductCard = ({ product }) => {
+
+  const dispatch = useDispatch();
+
+   const handleAddToCart = () => {
+    dispatch(addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      
+    }));
+    
+    
+    alert(`${product.name} added to cart!`);
+  }
   return (
     <Link href={`/products/${product.id}`} className="block">
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
@@ -90,11 +109,7 @@ const ProductCard = ({ product }) => {
 
           {/* Add to Cart Button */}
           <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              alert(`Added ${product.name} to cart!`);
-            }}
+            onClick={handleAddToCart}
             className='w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200'
           >
             Add to Cart
