@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/layout/Header";
 import Footer from './components/layout/Footer'
 import StoreProvider from './lib/store/StoreProvider';
+import ToastContainer from './components/ui/ToastContainer';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
       <StoreProvider>
+
+        <ToastContainer />
             <Header/>
 
         <main className="flex-grow">

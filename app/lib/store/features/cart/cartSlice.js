@@ -23,11 +23,21 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     // Add item to cart or update quantity if exists
-    addItem: (state, action) => {
+   addItem: (state, action) => {
       const newItem = action.payload;
+      
+      // Check if item already exists
       const existingItem = state.items.find(item => item.id === newItem.id);
       
       if (existingItem) {
+        // Check stock before increasing quantity
+        const maxStock = newItem.maxStock || 10; // Default to 10 if not specified
+        
+        if (existingItem.quantity >= maxStock) {
+          // We'll handle this with a toast in the component
+          return; // Don't add more than available stock
+        }
+        
         existingItem.quantity += newItem.quantity || 1;
       } else {
         state.items.push({

@@ -9,17 +9,22 @@ import CartSummary from '@/app/components/cart/CartSummary';
 import { selectCartItems } from '@/app/lib/store/features/cart/selectors';
 import { clearCart } from '@/app/lib/store/features/cart/cartSlice';
 import { FiArrowLeft, FiTrash2 } from 'react-icons/fi';
+import { useToast } from '@/app/lib/hooks/useToast';
 
 export default function CartPage() {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const toast = useToast();
   
   const handleClearCart = () => {
     dispatch(clearCart());
     setShowClearConfirm(false);
+    toast.success('Cart cleared successfully!');
     
   };
+
+  
   
   // If cart is empty
   if (cartItems.length === 0) {

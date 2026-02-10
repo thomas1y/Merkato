@@ -26,6 +26,7 @@ export const products = [
       "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&q=80"
     ],
     stock: 50,
+    inStock: true,
     rating: 4.5,
     reviews: 128,
     specifications: {
@@ -60,6 +61,7 @@ export const products = [
       "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800&q=80"
     ],
     stock: 100,
+    inStock: true,
     rating: 4.2,
     reviews: 56,
     specifications: {
@@ -92,6 +94,7 @@ export const products = [
       "https://images.unsplash.com/photo-1579586337278-3f5b32b3c05f?w=800&q=80"
     ],
     stock: 30,
+    inStock: true,
     rating: 4.7,
     reviews: 89,
     specifications: {
@@ -126,6 +129,7 @@ export const products = [
       "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?w=800&q=80"
     ],
     stock: 75,
+    inStock: true,
     rating: 4.3,
     reviews: 42,
     specifications: {
@@ -160,6 +164,7 @@ export const products = [
       "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=800&q=80"
     ],
     stock: 40,
+    inStock: true,
     rating: 4.8,
     reviews: 203,
     specifications: {
@@ -194,6 +199,7 @@ export const products = [
       "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80"
     ],
     stock: 60,
+    inStock: true,
     rating: 4.4,
     reviews: 67,
     specifications: {
@@ -228,6 +234,7 @@ export const products = [
       "https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=800&q=80"
     ],
     stock: 45,
+    inStock: true,
     rating: 4.6,
     reviews: 94,
     specifications: {
@@ -262,6 +269,7 @@ export const products = [
       "https://images.unsplash.com/photo-1603561596112-0a132b757442?w=800&q=80"
     ],
     stock: 80,
+    inStock: true,
     rating: 4.5,
     reviews: 121,
     specifications: {

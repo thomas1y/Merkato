@@ -6,23 +6,41 @@ import { addItem } from '@/app/lib/store/features/cart/cartSlice';
 
 import Link from "next/link";
 import { formatPrice, generateStars } from '../../lib/utils/helpers';
+import { useToast } from '@/app/lib/hooks/useToast';
 
 const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch();
+  const toast = useToast();
 
    const handleAddToCart = () => {
+    // Check if product is in stock
+    if (!product.inStock) {
+      toast.error(`${product.name} is out of stock`);
+      return;
+    }
+    
+    
+    const existingItem = cartItems.find(item => item.id === product.id);
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
+    
+    // Check if adding would exceed stock
+    if (currentQuantity + 1 > product.stock) {
+      toast.error(`Only ${product.stock} items available in stock`);
+      return;
+    }
+    
+    // Add to cart
     dispatch(addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
-      
+      maxStock: product.stock, // Pass stock info
     }));
     
-    
-    alert(`${product.name} added to cart!`);
-  }
+    toast.cart(`${product.name} added to cart!`);
+  };
   return (
     <Link href={`/products/${product.id}`} className="block">
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
