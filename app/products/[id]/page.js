@@ -96,12 +96,30 @@ export default function ProductDetailPage() {
   };
 
   const handleBuyNow = () => {
-    handleAddToCart();
-    // You could add navigation to checkout here
-    // router.push('/checkout');
+    if (product.maxStock <= 0) {
+      toast.error(`${product.name} is out of stock`);
+      return;
+    }
     
-    // Optional: Add a success toast for Buy Now
-    toast.success('Proceeding to checkout...');
+    if (quantity > product.maxStock) {
+      toast.error(`Only ${product.maxStock} items available in stock`);
+      return;
+    }
+    
+    // Add to cart first
+    dispatch(addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      maxStock: product.maxStock,
+      quantity: quantity
+    }));
+    
+    toast.cart(`${product.name} added to cart!`);
+    
+    // Then navigate to checkout
+    router.push('/checkout');
   };
 
   if (!product) {

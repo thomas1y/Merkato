@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { selectCartTotalQuantity } from '@/app/lib/store/features/cart/selectors';
 import { FiShoppingCart, FiSearch, FiUser } from 'react-icons/fi';
-const Header = () => {
 
- const totalQuantity = useSelector(selectCartTotalQuantity);
- const [mounted, setMounted] = useState(false);
+const Header = () => {
+  const totalQuantity = useSelector(selectCartTotalQuantity);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -15,20 +15,16 @@ const Header = () => {
 
   if (!mounted) return null;
 
- 
-
-
   return (
     <header className="sticky bg-white border-b top-0 w-full z-50 shadow-sm">
       <div className="container mx-auto px-4">
-       
         <div className="flex h-20 items-center justify-between">
           
           {/* LOGO SECTION - Left side */}
           <div className="flex items-center">
-            <div className="text-2xl font-bold text-blue-600">
+            <Link href="/" className="text-2xl font-bold text-blue-600">
               merkato
-            </div>
+            </Link>
           </div>
 
           {/* SEARCH BAR - Center */}
@@ -50,31 +46,37 @@ const Header = () => {
             
             {/* NAVIGATION LINKS */}
             <nav className="hidden md:flex items-center space-x-6">
-            <Link 
-              href="/" 
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Home
-            </Link>
-            <Link 
-              href="/products" 
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Products
-            </Link>
-            <Link 
-              href="/categories" 
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              Categories
-            </Link>
-            <Link 
-              href="/about" 
-              className="text-gray-700 hover:text-blue-600 transition-colors"
-            >
-              About
-            </Link>
-          </nav>
+              <Link 
+                href="/" 
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Home
+              </Link>
+              <Link 
+                href="/products" 
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Products
+              </Link>
+              <Link 
+                href="/cart" 
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Cart
+              </Link>
+              <Link 
+                href="/checkout" 
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                Checkout
+              </Link>
+              <Link 
+                href="/about" 
+                className="text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                About
+              </Link>
+            </nav>
 
             {/* CART ICON with badge */}
             <Link 
@@ -96,15 +98,11 @@ const Header = () => {
                 <span className="hidden md:inline">Login</span>
               </button>
             </div>
-
           </div>
-
         </div>
-        
       </div>
-           
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
