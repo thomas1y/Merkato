@@ -1,8 +1,11 @@
-// File: app/products/[id]/page.js
 "use client";
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from '@/app/lib/store/features/cart/cartSlice';
+import { useToast } from '@/app/lib/hooks/useToast';
+import { selectCartItems } from '@/app/lib/store/features/cart/selectors';
 import Link from "next/link";
 import { FiStar, FiShoppingCart, FiTruck, FiShield, FiArrowLeft, FiCheck } from "react-icons/fi";
 import ProductCard from "@/app/components/products/ProductCard";
@@ -10,6 +13,10 @@ import { getProductById, getRelatedProducts } from "@/app/lib/utils/mockData";
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const cartItems = useSelector(selectCartItems);
+  
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -30,19 +37,71 @@ export default function ProductDetailPage() {
     }
   }, [params.id]);
 
+  const handleDecreaseQuantity = () => {
+    if (quantity <= 1) {
+      toast.error('Quantity cannot be less than 1');
+      return;
+    }
+    setQuantity(quantity - 1);
+  };
+
+  const handleIncreaseQuantity = () => {
+    if (!product) return;
+    
+    if (quantity >= product.stock) {
+      toast.error(`Maximum ${product.stock} items available`);
+      return;
+    }
+    setQuantity(quantity + 1);
+  };
+
   const handleAddToCart = () => {
+    if (!product) return;
+    
     setIsAddingToCart(true);
-    // Simulate API call
+    
+    // Check if product is in stock
+    if (product.stock <= 0) {
+      toast.error(`${product.name} is out of stock`);
+      setIsAddingToCart(false);
+      return;
+    }
+    
+    // Check current quantity in cart
+    const existingItem = cartItems.find(item => item.id === product.id);
+    const currentQuantity = existingItem ? existingItem.quantity : 0;
+    
+    // Check if adding would exceed stock
+    if (currentQuantity + quantity > product.stock) {
+      toast.error(`Only ${product.stock} items available in stock`);
+      setIsAddingToCart(false);
+      return;
+    }
+    
+    // Simulate API call delay
     setTimeout(() => {
-      alert(`Added ${quantity} ${product.name}(s) to cart! Total: $${(product.price * quantity).toFixed(2)}`);
+      // Add to cart via Redux
+      dispatch(addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image || product.images?.[0],
+        maxStock: product.stock,
+        quantity: quantity
+      }));
+      
+      toast.cart(`${quantity} × ${product.name} added to cart!`);
       setIsAddingToCart(false);
     }, 500);
   };
 
   const handleBuyNow = () => {
     handleAddToCart();
-    // In real app, this would redirect to checkout
+    // You could add navigation to checkout here
     // router.push('/checkout');
+    
+    // Optional: Add a success toast for Buy Now
+    toast.success('Proceeding to checkout...');
   };
 
   if (!product) {
@@ -226,9 +285,9 @@ export default function ProductDetailPage() {
                 {/* Quantity Selector */}
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    onClick={handleDecreaseQuantity}
                     className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                    disabled={product.stock <= 0}
+                    disabled={product.stock <= 0 || quantity <= 1}
                   >
                     −
                   </button>
@@ -236,9 +295,9 @@ export default function ProductDetailPage() {
                     {quantity}
                   </span>
                   <button
-                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    onClick={handleIncreaseQuantity}
                     className="px-4 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                    disabled={product.stock <= 0}
+                    disabled={product.stock <= 0 || quantity >= product.stock}
                   >
                     +
                   </button>
