@@ -1,7 +1,7 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+
 import Link from 'next/link';
 import EmptyCart from '@/app/components/cart/EmptyCart';
 import CartItem from '@/app/components/cart/CartItem';
@@ -16,6 +16,15 @@ export default function CartPage() {
   const cartItems = useSelector(selectCartItems);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const toast = useToast();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null; 
+  }
   
   const handleClearCart = () => {
     dispatch(clearCart());

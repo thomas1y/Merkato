@@ -1,7 +1,7 @@
 'use client';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { removeItem, updateQuantity } from '@/app/lib/store/features/cart/cartSlice';
+import { removeFromCart, updateQuantity } from '@/app/lib/store/features/cart/cartSlice';
 import { useToast } from '@/app/lib/hooks/useToast';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
 import { products } from '@/app/lib/utils/mockData'; 
@@ -61,7 +61,7 @@ export default function CartItem({ item }) {
   };
   
   const handleRemove = () => {
-    dispatch(removeItem(item.id));
+    dispatch(removeFromCart(item.id));
     toast.warning(`${item.name} removed from cart`);
   };
   

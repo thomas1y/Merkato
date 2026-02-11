@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
     }
     
     // Add to cart
-    dispatch(addItem({
+    dispatch(addToCart({
       id: product.id,
       name: product.name,
       price: product.price,

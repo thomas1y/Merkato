@@ -9,7 +9,7 @@ import { useToast } from '@/app/lib/hooks/useToast';
 
 export default function ShippingForm() {
   const dispatch = useDispatch();
-  const { toast } = useToast();
+  const  toast  = useToast();
   const shippingInfo = useSelector(selectShippingInfo);
   const errors = useSelector(selectCheckoutErrors);
   
