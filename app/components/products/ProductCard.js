@@ -1,7 +1,7 @@
 'use client';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from '@/app/lib/store/features/cart/cartSlice';
+import { addToCart } from '@/app/lib/store/features/cart/cartSlice';
 import Link from "next/link";
 import { formatPrice, generateStars } from '../../lib/utils/helpers';
 import { useToast } from '@/app/lib/hooks/useToast';
