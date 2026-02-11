@@ -6,6 +6,7 @@ import StoreProvider from './lib/store/StoreProvider';
 import ToastContainer from './components/ui/ToastContainer';
 import AuthGuard from './components/auth/AuthGuard';
 import { AuthProvider } from './components/auth/AuthProvider';
+import CartSyncNotification from './components/cart/CartSyncNotification'; // ADD THIS
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <StoreProvider>
           <AuthProvider>
             <ToastContainer />
+            <CartSyncNotification /> {/* ADD THIS */}
             <Header />
             <main className="flex-grow">
               <AuthGuard>

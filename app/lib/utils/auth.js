@@ -49,25 +49,67 @@ export const getAuthHeader = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-// Merge guest cart with user cart after login
+// UPDATED: Enhanced cart merging logic
 export const mergeCarts = (guestCart, userCart) => {
-  const merged = [...userCart];
+  // Handle case where one cart is empty
+  if (!guestCart?.items?.length) return userCart;
+  if (!userCart?.items?.length) return guestCart;
   
-  guestCart.forEach(guestItem => {
-    const existingItem = merged.find(item => item.id === guestItem.id);
+  const mergedItems = [...userCart.items];
+  
+  guestCart.items.forEach(guestItem => {
+    const existingItem = mergedItems.find(item => item.id === guestItem.id);
     
     if (existingItem) {
       // Combine quantities, respecting stock limits
+      const maxStock = existingItem.maxStock || guestItem.maxStock || 99;
       existingItem.quantity = Math.min(
         existingItem.quantity + guestItem.quantity,
-        existingItem.maxStock || 99
+        maxStock
       );
+      
+      // Preserve the higher price (if different)
+      if (guestItem.price > existingItem.price) {
+        existingItem.price = guestItem.price;
+      }
+      
+      // Preserve the better image
+      if (guestItem.image && !existingItem.image) {
+        existingItem.image = guestItem.image;
+      }
     } else {
-      merged.push(guestItem);
+      // Add new item from guest cart
+      mergedItems.push({ ...guestItem });
     }
   });
   
-  return merged;
+  // Calculate totals
+  const totalQuantity = mergedItems.reduce((total, item) => total + item.quantity, 0);
+  const subtotal = mergedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  
+  return {
+    items: mergedItems,
+    totalQuantity,
+    subtotal
+  };
+};
+
+// NEW: Save user cart to server
+export const saveUserCart = async (userId, cart) => {
+  // In production, this would be an API call
+  console.log(`Saving cart for user ${userId}:`, cart);
+  return Promise.resolve({ success: true });
+};
+
+// NEW: Clear guest cart data
+export const clearGuestCart = () => {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    localStorage.removeItem('merkato_cart');
+  } catch (error) {
+    console.error('Failed to clear guest cart:', error);
+  }
 };
 
 // Format user display name
@@ -85,4 +127,15 @@ export const formatUserName = (user) => {
   }
   
   return 'User';
+};
+
+
+export const getCartSyncMessage = (itemCount) => {
+  if (itemCount === 0) {
+    return 'Your cart is ready';
+  } else if (itemCount === 1) {
+    return '1 item has been added to your cart';
+  } else {
+    return `${itemCount} items have been added to your cart`;
+  }
 };

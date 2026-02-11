@@ -5,6 +5,7 @@ export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectAuthLoading = (state) => state.auth.isLoading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectCartSync = (state) => state.auth.cartSync;
+export const selectShowSyncNotification = (state) => state.auth.showSyncNotification; // NEW
 
 // Derived selectors
 export const selectUserName = (state) => state.auth.user?.name || null;
@@ -38,4 +39,11 @@ export const selectIsProfileComplete = (state) => {
     user.email &&
     user.phone
   );
+};
+
+// NEW: Get user's first name
+export const selectUserFirstName = (state) => {
+  const name = state.auth.user?.name;
+  if (!name) return null;
+  return name.split(' ')[0];
 };

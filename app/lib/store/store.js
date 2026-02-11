@@ -2,8 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from './features/cart/cartSlice';
 import uiReducer from './features/ui/uiSlice';
 import checkoutReducer from './features/checkout/checkoutSlice';
-import authReducer from './features/auth/authSlice'; 
+import authReducer from './features/auth/authSlice';
 import { saveCheckoutMiddleware } from './features/checkout/checkoutSlice';
+import { cartSyncMiddleware } from './middleware/cartSyncMiddleware'; // ADD THIS
 
 export const makeStore = () => {
   return configureStore({
@@ -11,14 +12,18 @@ export const makeStore = () => {
       cart: cartReducer,
       ui: uiReducer,
       checkout: checkoutReducer,
-      auth: authReducer, 
+      auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
           // Ignore these action types
-          ignoredActions: ['auth/login/fulfilled', 'auth/register/fulfilled'],
+          ignoredActions: [
+            'auth/login/fulfilled', 
+            'auth/register/fulfilled',
+            'cart/syncCartWithUser'
+          ],
         },
-      }).concat(saveCheckoutMiddleware),
+      }).concat(saveCheckoutMiddleware, cartSyncMiddleware), 
   });
 };
